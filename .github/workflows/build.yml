@@ -8,12 +8,13 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - run: attrib -R assets\icon.ico
+      - name: Ensure icon is writable
+        run: echo           copy assets\icon.ico %C:\Users\T-Gamer\AppData\Local\Temp%\icon.ico && attrib -R %C:\Users\T-Gamer\AppData\Local\Temp%\icon.ico
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - run: pip install -r requirements.txt
-      - run: pyinstaller --onefile --windowed --icon=assets/icon.ico main.py
+      - run: pyinstaller --onefile --windowed --icon=C:\Users\T-Gamer\AppData\Local\Temp\icon.ico main.py
       - uses: actions/upload-artifact@v4
         with:
           name: osintchat-exe
