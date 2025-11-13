@@ -7,19 +7,23 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+  - uses: actions/checkout@v4
 
-      - name: Fix icon read-only attribute
-        run: attrib -R assets\icon.ico
+  - name: Make icon writable
+    run: |
+      icofile="assets/icon.ico"
+      if [ -f "$icofile" ]; then chmod 644 "$icofile"; fi
+    shell: bash
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+  - uses: actions/setup-python@v5
+    with:
+      python-version: '3.11'
 
-      - run: pip install -r requirements.txt
-      - run: pyinstaller --onefile --windowed --icon=assets/icon.ico main.py
+  - run: pip install -r requirements.txt
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: osintchat-exe
-          path: dist/main.exe
+  - run: pyinstaller --onefile --windowed --icon=assets/icon.ico main.py
+
+  - uses: actions/upload-artifact@v4
+    with:
+      name: osintchat-exe
+      path: dist/main.exe
