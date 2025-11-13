@@ -1,0 +1,8 @@
+aiohttp
+aiosqlite
+ttkthemes
+reportlab
+python-dotenv
+maigret
+holehe
+pyinstaller

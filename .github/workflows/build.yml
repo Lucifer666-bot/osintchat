@@ -1,0 +1,22 @@
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: |
+          pip install -r requirements.txt
+      - run: |
+          pyinstaller main.py --onefile --windowed --name OSINTChat --icon assets/icon.ico --add-data "assets;assets" --hidden-import aiohttp --hidden-import ttkthemes
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: dist/OSINTChat.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
