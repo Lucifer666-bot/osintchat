@@ -11,8 +11,8 @@ jobs:
 
       - name: Copy icon to runner temp with full access
         run: |
-          copy "${{env:GITHUB_WORKSPACE}}\assets\icon.ico" "${{ runner.temp }}\icon.ico"
-          attrib -R "${{ runner.temp }}\icon.ico"
+          Copy-Item "$env:GITHUB_WORKSPACE\assets\icon.ico" -Destination "$env:RUNNER_TEMP\icon.ico"
+          attrib -R "$env:RUNNER_TEMP\icon.ico"
 
       - uses: actions/setup-python@v5
         with:
@@ -20,7 +20,7 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - run: pyinstaller --onefile --windowed --icon="${{ runner.temp }}\icon.ico" main.py
+      - run: pyinstaller --onefile --windowed --icon="$env:RUNNER_TEMP\icon.ico" main.py
 
       - uses: actions/upload-artifact@v4
         with:
