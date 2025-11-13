@@ -8,18 +8,16 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - run: pip install -r requirements.txt
 
-      # copia o ícone para a pasta de trabalho corrente
-      - run: Copy-Item ".\assets\icon.ico" ".\icon.ico"
+      # cria um ícone .ico vazio de 32×32 256-cores (1 byte)
+      - run: |
+          Set-Content -Path ".\icon.ico" -Value ([byte[]](0,0,1,0,1,0,32,32,0,0,1,0,8,0,128,4,0,0,22,0,0,0,40,0,0,0,32,0,0,0,64,0,0,0,1,0,8,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)) -Encoding Byte
 
       - run: pyinstaller --onefile --windowed --icon="icon.ico" main.py
-
       - uses: actions/upload-artifact@v4
         with:
           name: osintchat-exe
