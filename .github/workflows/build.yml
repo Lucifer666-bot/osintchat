@@ -8,11 +8,18 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - run: pip install -r requirements.txt
-      - run: pyinstaller --onefile --windowed --icon="assets/icon.ico" main.py
+
+      # copia o ícone para a pasta de trabalho corrente
+      - run: Copy-Item ".\assets\icon.ico" ".\icon.ico"
+
+      - run: pyinstaller --onefile --windowed --icon="icon.ico" main.py
+
       - uses: actions/upload-artifact@v4
         with:
           name: osintchat-exe
