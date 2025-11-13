@@ -8,20 +8,13 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Copy icon to runner temp with full access
-        run: |
-          copy "${{env:GITHUB_WORKSPACE}}\assets\icon.ico" "${{ runner.temp }}\icon.ico"
-          attrib -R "${{ runner.temp }}\icon.ico"
-
+        run: echo           copy "${{env:GITHUB_WORKSPACE}}\assets\icon.ico" "${{ runner.temp }}\icon.ico" && attrib -R "${{ runner.temp }}\icon.ico"
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - run: pip install -r requirements.txt
-
       - run: pyinstaller --onefile --windowed --icon="${{ runner.temp }}\icon.ico" main.py
-
       - uses: actions/upload-artifact@v4
         with:
           name: osintchat-exe
